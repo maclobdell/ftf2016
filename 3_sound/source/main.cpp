@@ -16,7 +16,7 @@ static void silence() {
 // Takes in a tone frequency, and after duration (in ms.) we stop playing again
 static void play_tone(int tone, int duration) {
     buzzer.period_us(tone);
-    buzzer.write(0.10f); // 20% duty cycle, otherwise it's too loud
+    buzzer.write(0.10f); // 10% duty cycle, otherwise it's too loud
     
     // we wait for duration ms. and then call the silence function
     Scheduler::postCallback(silence).delay(milliseconds(duration));

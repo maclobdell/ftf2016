@@ -85,7 +85,7 @@ Use the above pattern to combine 1. and 2. Pressing the button should start blin
 1. If the buzzer is not yet connected to your board, do xyz
 1. We use pulse width modulation to create the square waves, the buzzer is connected to pin 3
 1. We have a `play_tone` function, now let's hook it up...
-1. Under '// YOUR CODE HERE (1)' add the following code
+1. Under '// YOUR CODE HERE' add the following code
 
 ```cpp
 static void play_note1() {
@@ -100,3 +100,110 @@ static void play_note2() {
 1. Try and play with different tones and tone lengths
 
 **Optional:** Currently tones have fixed length. Change the code to play a tone when the button fall's, and call silence when button rise's. This should give you the ability to play some small (two-tone) songs. Look in the directory for '4_accelerometer' for hints.
+
+## 4. More inputs!
+
+1. Switch projects, click `3_sound` and change to `4_accelerometer`
+1. We're going to use the accelerometer movement detector to play a sound too, this means we can knock the board on a table and get a sound
+1. A new library is included which does this for you already
+1. At the bottom of main.cpp you'll see initialization logic for the accelerometer
+1. When the accelerometer triggers (movement detected), we can execute some code again
+1. Under '// YOUR CODE HERE' add the following code:
+
+```
+static void play_note3() {
+    play_tone(NOTE_E4);
+    
+    Scheduler::postCallback(silence).delay(milliseconds(200));
+}
+```
+
+1. We manually call `silence` now to get predictable behavior
+1. Try and change the code to use `accel_interrupt_pin.rise` to silence instead (remove the Scheduler call from play_note3 as well). See what it does.
+1. Change the notes and play some simple melodies
+
+**Optional:** You can read the data from the accelerometer (x, y, z axis) via:
+
+```cpp
+static void read_accel() {
+    SRAWDATA accel_data;
+    SRAWDATA magnet_data;
+    accel.get_data(&accel_data, &magnet_data);
+    
+    // this will show up in PuTTY
+    printf("x=%d y=%d z=%d\r\n", accel_data.x, accel_data.y, accel_data.z);
+}
+```
+
+Use minar to read the data every 10 ms., then use the value from the accelerometer (e.g. `accel_data.z`) and feed it into `play_tone` function. We can now change the sound depending on how you hold the device in physical space. Allow to pause the sound by pressing one of the buttons.
+
+You can play with the distribution of the tone. Just feeding the raw data into the algorithm doesn't generate the nicest effect.
+
+## 4b. Pads (advanced)
+
+1. We can add vibration pads as well, although this requires a bit of assembly
+1. Take one of the pads from the front, and a 1 million Ohm resistor (brown, black, green)
+1. Take a cable stripper and strip a bit of the red and black wires of the pad
+1. Put the red cable into A0 ([pinout](https://developer.mbed.org/media/uploads/GregC/xfrdm-k64f_header-pinout.jpg.pagespeed.ic.GDev93u6zd.jpg))
+1. Put the black cable in one of the GND
+1. Put the resistor in A0 and GND
+
+Now we can read the value of the sensor via:
+
+```cpp
+// top of the file
+AnalogIn vibrate(A0);
+
+// with your other functions
+static void read_vibrate() {
+    // value is between 0 and 65535
+    printf("vibrate %d\r\n", vibrate.read_u16());
+}
+
+// in app_start
+Scheduler::postCallback(read_vibrate).period(milliseconds(30));
+```
+
+Now use this reading to generate tones whenever you detect a big enough hit on the pad (> 1000 for example). You can play with different tones, depending on how hard you hit the pad as well.
+
+## 5. Songs
+
+1. We can play tones from various inputs, but we could also play songs that we program in
+1. We create a simple format to write notes (in app_start).
+1. Now we need to write the code that will play this format.
+1. Our `play_song` function takes 3 arguments:
+    * The number of notes left
+    * The notes left (as a pointer)
+    * The durations left (as a pointer)
+1. Every time we call this function we subtract 1 from the notes left, and up the notes and durations. When we reach 0 we're done.
+1. We add a pause between each note as well.
+1. Under 'YOUR CODE HERE' insert:
+
+```cpp
+    // melody and duration are pointers, they point to the array of tones and durations we declared earlier
+    // every time we call this function, we up these pointers (move one element forward)
+    // so the current tone is always the first element of melody (same for duration)
+    int tone = melody[0];
+    // BPM is quarter notes per minute, so length in milliseconds is:
+    int length = (int)(static_cast<float>(BPM / 60) * (1000.0f / (float)duration[0]));
+    
+    play_tone(tone);
+
+    // is this the last tone?    
+    if (notes_left - 1 == 0) {
+        // we're done! just finish this note and silence
+        Scheduler::postCallback(silence).delay(milliseconds(length / 2));
+    }
+    else {
+        // after half the length of this tone, we silence
+        Scheduler::postCallback(silence).delay(milliseconds(length / 2));
+        
+        // after the full length of this tone, we call ourselves, but up the melody, and down the notes_left
+        FunctionPointer3<void, int, int*, int*> fp(play_song);
+        Scheduler::postCallback(fp.bind(notes_left - 1, melody + 1, duration + 1)).delay(milliseconds(length));
+    }
+```
+
+1. Delete the pause between the notes, what do you see?
+1. Find some melody and program it in, make some of your own music. Play with the BPM as well to speed things up or slow things down.
+
