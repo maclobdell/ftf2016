@@ -1,0 +1,68 @@
+{
+  "name": "kinetis-k64-gcc",
+  "version": "2.0.2",
+  "inherits": {
+    "mbed-gcc": "^1.0.0"
+  },
+  "description": "Official mbed build target for Freescale Kinetis K64 family chips.",
+  "licenses": [
+    {
+      "url": "https://spdx.org/licenses/Apache-2.0",
+      "type": "Apache-2.0"
+    }
+  ],
+  "keywords": [
+    "mbed-official",
+    "mbed",
+    "kinetis",
+    "kinetis-k64",
+    "freescale",
+    "mk64f",
+    "mk64fn1m0vll12",
+    "gcc"
+  ],
+  "config": {
+    "mbed-os": {},
+    "cmsis": {
+      "nvic": {
+        "ram_vector_address": "0x1FFF0000",
+        "flash_vector_address": "0x0",
+        "user_irq_offset": 16,
+        "user_irq_number": 86
+      }
+    },
+    "uvisor": {
+      "present": 1
+    },
+    "hardware": {}
+  },
+  "similarTo": [
+    "k64f",
+    "ksdk-mcu",
+    "mk64fn1m0vmd12",
+    "mk64fn1m0",
+    "mk64fn",
+    "kinetis",
+    "freescale",
+    "cortex-m4",
+    "armv7-m",
+    "arm",
+    "gcc",
+    "mbed"
+  ],
+  "toolchain": "CMake/toolchain.cmake",
+  "scripts": {
+    "debug": [
+      "valinor",
+      "--target",
+      "K64F",
+      "$program"
+    ],
+    "test": [
+      "mbed_test_wrapper",
+      "--target",
+      "K64F",
+      "$program"
+    ]
+  }
+}

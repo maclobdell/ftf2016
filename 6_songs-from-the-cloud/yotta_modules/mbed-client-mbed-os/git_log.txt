@@ -1,0 +1,15 @@
+ba92f60 version v1.1.3
+7eba75d Merge pull request #22 from ARMmbed/iotclt-573
+96487a5 Client sends registration message multiple times  * Fix defect: IOTCLT-573 - mbed Client on HW retransmits POST registration several times after registration is done (5-10 second interval)
+7887c2c Update stubs
+8f469f4 version v1.1.2
+dffca73 Merge pull request #21 from ARMmbed/message_size
+37133cf Change CoAP message upper bound limit to 1152
+562fd1c Fix unit test compilation
+4f4e641 Update mbed-client-c dependency to version 2.x.x
+0e6e161 Fix cobertura report
+3a61a77 Fix cobertura report
+001ed94 version v1.1.1
+d8cc41c Merge pull request #18 from ARMmbed/fix_compiler_warnings
+c53419f Fix unit tests
+faf4e70 Remove compiler warnings

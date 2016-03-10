@@ -1,0 +1,16 @@
+{
+  "name": "songs-from-the-cloud",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "mbed-drivers": "^1.3.0",
+    "mbed-client-ethernet-c-style": "~0.1.1",
+    "mbed-client": "1.4.4"
+  },
+  "bin": "./source",
+  "private": false,
+  "targetDependencies": {},
+  "testDependencies": {}
+}

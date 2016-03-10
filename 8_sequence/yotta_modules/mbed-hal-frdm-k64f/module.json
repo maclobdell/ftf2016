@@ -1,0 +1,34 @@
+{
+  "name": "mbed-hal-frdm-k64f",
+  "version": "1.0.2",
+  "description": "mbed HAL for the Freescale FRDM-K64F development board",
+  "keywords": [
+    "mbed",
+    "hal",
+    "k64f",
+    "ksdk",
+    "frdm",
+    "freescale",
+    "mbed-official"
+  ],
+  "author": "martin.kojtal@arm.com",
+  "repository": {
+    "url": "https://github.com/ARMmbed/mbed-hal-frdm-k64f.git",
+    "type": "git"
+  },
+  "homepage": "https://github.com/ARMmbed/mbed-hal-frdm-k64f",
+  "licenses": [
+    {
+      "url": "https://spdx.org/licenses/Apache-2.0",
+      "type": "Apache-2.0"
+    }
+  ],
+  "extraIncludes": [
+    "mbed-hal-frdm-k64f"
+  ],
+  "dependencies": {
+    "mbed-hal": "*",
+    "mbed-hal-k64f": "^1.1.0"
+  },
+  "targetDependencies": {}
+}

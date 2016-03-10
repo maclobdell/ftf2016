@@ -168,6 +168,7 @@ Now use this reading to generate tones whenever you detect a big enough hit on t
 
 ## 5. Songs
 
+1. Switch projects, click `4_accelerometer` and change to `5_songs`
 1. We can play tones from various inputs, but we could also play songs that we program in
 1. We create a simple format to write notes (in app_start).
 1. Now we need to write the code that will play this format.
@@ -185,7 +186,7 @@ Now use this reading to generate tones whenever you detect a big enough hit on t
     // so the current tone is always the first element of melody (same for duration)
     int tone = melody[0];
     // BPM is quarter notes per minute, so length in milliseconds is:
-    int length = (int)(static_cast<float>(BPM / 60) * (1000.0f / (float)duration[0]));
+    int length = static_cast<int>(static_cast<float>(1000 / duration[0]) * (60000.0f / static_cast<float>(BPM * 1000)));
     
     play_tone(tone);
 
@@ -207,3 +208,82 @@ Now use this reading to generate tones whenever you detect a big enough hit on t
 1. Delete the pause between the notes, what do you see?
 1. Find some melody and program it in, make some of your own music. Play with the BPM as well to speed things up or slow things down.
 
+**Optional:** Add some LED effects whenever songs are playing. Toggle colors (we have red, green, blue LEDs on the board) depending on the tone.
+
+## 6. Songs from the cloud
+
+1. Switch projects, click `5_songs` and change to `6_songs-from-the-cloud`.
+1. Go to https://connector.mbed.com/, and sign in.
+1. Now click on 'Security Credentials' and click 'Get my Security Credentials'.
+1. Copy everything in the gray box.
+1. Make a new file 'sxsw/6_songs-from-the-cloud/source/security.h' and paste the content in.
+1. Plug in an ethernet cable and hit 'Build'.
+1. Flash your device. After a couple of seconds the GREEN led should turn on.
+1. Go to https://connector.mbed.com/#endpoints, a device should have appeared.
+1. Hurray, your device is connected to the internet!
+1. Let's set up a web application so we can talk to the device
+1. In the terminal, go to ~/workspace/sxsw/6_songs-from-the-cloud/web
+1. Run `npm install`
+1. Go to https://connector.mbed.com/#accesskeys and get an access key
+1. Now run `TOKEN=xxx node server.js` (where xxx = your access key)
+1. In the terminal it will show: 'Set callback URL to XXXX'
+1. Click on XXXX and select 'Open'
+1. A web page opens and your device should be there. Click on the device, and on the next page click 'Play'
+1. We can send new sounds to the board, f.e. via the 'Set Mario' button. Wait until you get an alert and press 'Play' again.
+1. **HOLD YOUR FINGER ON THE BUZZER, THIS WILL BE LOUD!**
+1. You can write some new songs from JavaScript (in sxsw/6_songs-from-the-cloud/web/views/instrument.html) now
+
+**Optional:** Look into how we send values to the cloud. Add a way of setting the BPM from the web app as well.
+
+**Optional 2:** We can get events when a resource on the device changes (via `mbed_client_set()`) in the web app. See if we can store here whether we're playing a song currently and stream that data back to the web app ([hint](https://github.com/janjongboom/mbed-knock-detector/blob/master/web/server.js#L52)).
+
+## 7. Changing waveforms
+
+1. We can change the waveforms to make more complicated sounds.
+1. We'll keep using 6_songs-from-the-cloud
+1. We can make a sound fade away at the end of the tone, changing the sound completely... Change the `playTone` function to read:
+
+```cpp
+static void playTone(int tone, int duration) {
+    for (long i = 0; i < duration * 1000L; i += tone * 2) {
+        // let's change the buzzer's volume depending on how far we are
+        float pct = (float)i / (float)(duration * 1000L);
+
+        buzzer = (1 - pct) / 4; // high to low
+        wait_us(tone);
+        buzzer = 0.0f;
+        wait_us(tone);
+    }
+}
+```
+
+1. Build and flash, and start playing from the web app again. Compare it with the previous version (perhaps if your neighbour did not flash yet).
+1. Similarly we can emulate sine-waves, changing the sound even more:
+
+```cpp
+#define PI 3.14159265
+static void playTone(int tone, int duration) {
+    for (long i = 0; i < duration * 1000L; i += tone * 2) {
+        // let's change the buzzer's volume depending on how far we are
+        float pct = (float)i / (float)(duration * 1000L);
+
+        // make 4 sinus forms (8 * PI), then map it from -1..1 to 0.1..0.6,
+        // then divide by 8 to not make too much sound
+        buzzer = (sin(pct * (8 * PI)) / 2 + 0.6) / 8;
+        wait_us(tone);
+        buzzer = 0.0f;
+        wait_us(tone);
+    }
+
+    buzzer = 0.0f;
+}
+```
+
+1. Change the number of sine-waves, and find something that sounds nice (try 2 or 3), or go higher.
+
+**Optional:** You can combine two or more sine-waves to emulate chords. Try it out. It'll take a bit of math [hint](http://betterexplained.com/articles/intuitive-understanding-of-sine-waves/).
+
+## 8. Recording a sequence and sending it back
+
+1. Back in example 4 we had all these inputs, now let's record that and send it back to the cloud. From there we can then play it with proper samples.
+1. Switch projects, click `6_songs-from-the-cloud` and change to `8_sequence`.

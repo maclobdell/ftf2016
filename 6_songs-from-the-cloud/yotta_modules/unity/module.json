@@ -1,0 +1,27 @@
+{
+  "name": "unity",
+  "version": "2.1.0",
+  "description": "Unity Project - A Test Framework for C",
+  "keywords": [
+    "testing",
+    "C",
+    "unittest",
+    "mbed",
+    "mbed-official"
+  ],
+  "author": "Niklas Hauser <niklas.hauser@arm.com>",
+  "repository": {
+    "url": "git@github.com:ARMmbed/unity.git",
+    "type": "git"
+  },
+  "homepage": "https://github.com/ARMmbed/unity",
+  "licenses": [
+    {
+      "url": "https://spdx.org/licenses/MIT",
+      "type": "MIT"
+    }
+  ],
+  "dependencies": {
+    "utest": "^1.5.0"
+  }
+}
