@@ -68,3 +68,35 @@ static void toggle_green() {
 1. Hit the Build button and flash the application. Clicking SW2 and SW3 will now toggle the LEDs. Having them both on will also allow you to create yellow.
 
 **Optional:** We use `fall` currently, which triggers when the button is clicked. We can also use `rise` to get an event when the button is no longer clicked. Change the code so that the LEDs only burn when the button is pressed down.
+
+**Optional 2:** When we start a periodic timer with minar, we can cancel the timer as well via:
+
+```cpp
+callback_handle_t callback = Scheduler::postCallback(blinky).period(milliseconds(500)).getHandle();
+Scheduler::cancelCallback(callback);
+```
+
+Use the above pattern to combine 1. and 2. Pressing the button should start blinking the color, instead of turning it on. Pressing the button again should cancel the blinking.
+
+## 3. Sound instead of color
+
+1. Switch projects, click `2_two_buttons`, and change to `3_sound`
+1. We have a buzzer, which we can use instead of the color as an output
+1. If the buzzer is not yet connected to your board, do xyz
+1. We use pulse width modulation to create the square waves, the buzzer is connected to pin 3
+1. We have a `play_tone` function, now let's hook it up...
+1. Under '// YOUR CODE HERE (1)' add the following code
+
+```cpp
+static void play_note1() {
+    play_tone(NOTE_C4, 200);
+}
+static void play_note2() {
+    play_tone(NOTE_D4, 200);
+}
+```
+
+1. Build and flash, when hitting the buttons you'll now get sound (a C and a D tone)
+1. Try and play with different tones and tone lengths
+
+**Optional:** Currently tones have fixed length. Change the code to play a tone when the button fall's, and call silence when button rise's. This should give you the ability to play some small (two-tone) songs. Look in the directory for '4_accelerometer' for hints.

@@ -1,5 +1,7 @@
 #include "mbed-drivers/mbed.h"       // this tells us to load mbed OS related functions
 
+using namespace minar;
+
 DigitalOut red(LED_RED);             // we create a variable 'red', use it as an out port
 DigitalOut green(LED_GREEN);         // we create a variable 'green', use it as an out port
 
