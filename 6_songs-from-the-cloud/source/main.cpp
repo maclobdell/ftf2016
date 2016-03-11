@@ -20,7 +20,12 @@ void registered() {
 // this is our function that plays a tone. 
 // Takes in a tone frequency, and after duration (in ms.) we stop playing again
 static void playTone(int tone, int duration) {
-    // YOUR CODE HERE
+    for (long i = 0; i < duration * 1000L; i += tone * 2) {
+        buzzer = 0.2f;
+        wait_us(tone);
+        buzzer = 0.0f;
+        wait_us(tone);
+    }
 }
 
 static void play_song(std::vector<int>* melody, std::vector<int>* duration) {
