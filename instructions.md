@@ -4,6 +4,8 @@ Welcome to our session at SX Create! If you have any questions, please just give
 
 In this session we'll work through eigth examples together. Jan will demonstrate everything, but this document should help you in case you're stuck or did not completely follow along. If you feel you're way faster than everyone else, we have some extra tasks at the bottom of each example. Please do not get ahead, the later examples all do something with music, and that will be very annoying for the other participants. :-)
 
+Reading this doc after SXSW? Not a problem. Get a FRDM-K64F dev board and some piezo buzzers and pads, and follow along.
+
 ## Setup
 
 1. Connect the FRDM-K64F board to your computer. There's 2 micro-USB ports on the board, use the OpenSDA one!
