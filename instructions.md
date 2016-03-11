@@ -287,3 +287,8 @@ static void playTone(int tone, int duration) {
 
 1. Back in example 4 we had all these inputs, now let's record that and send it back to the cloud. From there we can then play it with proper samples.
 1. Switch projects, click `6_songs-from-the-cloud` and change to `8_sequence`.
+1. Copy 'security.h' from 6_songs-from-the-cloud/source/security.h to 8_sequence/source/security.h
+1. Hit the Build button, make sure the project builds, and when you flash it on the board that the LED turns green.
+1. Let's record what we're doing, f.e. when we hit which button, or pad. We have the same interrupts already set up, so let's implement the functions we had before.
+
+http://drumhits.biz/free-drum-samples/cat_view/4-free-drum-samples

@@ -1,0 +1,15 @@
+{
+  "name": "knock-detector-web",
+  "version": "1.0.0",
+  "description": "Knock detector with mbed Device Connector",
+  "main": "server.js",
+  "author": "Jan Jongboom <jan.jongboom@arm.com>",
+  "license": "WTFPL",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "hbs": "^4.0.0",
+    "mbed-connector-api": "^2.0.0",
+    "socket.io": "^1.4.5"
+  }
+}

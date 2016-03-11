@@ -19,21 +19,8 @@ void registered() {
 
 // this is our function that plays a tone. 
 // Takes in a tone frequency, and after duration (in ms.) we stop playing again
-#define PI 3.14159265
 static void playTone(int tone, int duration) {
-    for (long i = 0; i < duration * 1000L; i += tone * 2) {
-        // let's change the buzzer's volume depending on how far we are
-        float pct = (float)i / (float)(duration * 1000L);
-
-        // make 4 sinus forms (8 * PI), then map it from -1..1 to 0.1..0.6,
-        // then divide by 8 to not make too much sound
-        buzzer = (sin(pct * (8 * PI)) / 2 + 0.6) / 8;
-        wait_us(tone);
-        buzzer = 0.0f;
-        wait_us(tone);
-    }
-
-    buzzer = 0.0f;
+    // YOUR CODE HERE
 }
 
 static void play_song(std::vector<int>* melody, std::vector<int>* duration) {

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Music! {{id}}</title>
+  <style>
+    #recorded {
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Instrument {{id}}</h1>
+  
+  <div id="recorded">
+    {{recorded}}
+  </div>
+  
+  <audio src="/C_SNARE_1.wav" id="snare"></audio>
+  <audio src="/D_TOM_2.wav" id="tom"></audio>
+  <audio src="/C_HAT_2.wav" id="hat"></audio>
+  
+  <hr>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+  var socket = io.connect(location.origin);
+  socket.emit('subscribe-recorded', '{{id}}');
+  socket.on('recorded', function(v) {
+    console.log('got something', v);
+    document.querySelector('#recorded').textContent = JSON.stringify(v);
+    play();
+  });
+  
+  var mapping = {
+    1: 'hat',
+    2: 'snare',
+    3: 'tom'
+  };
+  function play() {
+    var song = JSON.parse(document.querySelector('#recorded').textContent);
+    
+    song.forEach(function(note) {
+      var sample = mapping[note[0]];
+      var timing = note[1];
+      
+      setTimeout(function() {
+        document.querySelector('#' + sample).play();
+      }, timing);
+    });
+  }
+  play();
+  </script>
+</body>
+</html>

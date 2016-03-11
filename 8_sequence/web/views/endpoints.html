@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pick an endpoint</title>
+</head>
+
+<body>
+  <h1>Your endpoints</h1>
+  <ul>
+  {{#endpoints}}
+    <li><a href="/{{type}}/{{name}}">{{name}} ({{type}})</a></li>
+  {{/endpoints}}
+  </ul>
+</body>
+</html>

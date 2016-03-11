@@ -1,0 +1,23 @@
+69c0902 version v1.0.14
+ca40475 Merge pull request #25 from ARMmbed/dtls_fix
+33b1aa0 Update stubs
+fec971a Use default handshake timeout values with blocking sockets
+7af3f31 Fix unit tests
+de67583 version v1.0.13
+f05de35 More logs
+46d1008 version v1.0.12
+6296282 Add some logs
+9e2225f Update stubs
+ae5879c version v1.0.11
+fa71f62 Merge pull request #20 from ARMmbed/fix_ssl_default
+cafd82f Fix coverage
+31444a8 Fix unit tests
+46861b9 Fix for client using wrong cipher suites
+c202a51 Merge pull request #19 from ARMmbed/fix_unittest
+3f31496 Fix unit test compilation
+d28c25b version v1.0.10
+6c94577 Merge pull request #18 from ARMmbed/memleak_fix
+a1e12bf fixed another var name
+59f7bc5 fix wrong variable name
+9fdc493 Updated stub as well
+4b31cbc Added entropy free

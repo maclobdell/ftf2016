@@ -1,0 +1,22 @@
+{
+  "name": "mbed-client-ethernet-c-style",
+  "version": "0.1.2",
+  "license": "Apache-2.0",
+  "description": "C-Style library for mbed Client over Ethernet",
+  "keywords": [
+    "mbed-client",
+    "ethernet"
+  ],
+  "author": "Jan Jongboom <jan.jongboom@arm.com>",
+  "homepage": "https://github.com/janjongboom/mbed-client-ethernet-c-style/tree/master/mbed-client-ethernet-c-style",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/janjongboom/mbed-client-ethernet-c-style.git"
+  },
+  "dependencies": {
+    "mbed-client": "^1.4.4"
+  },
+  "private": false,
+  "targetDependencies": {},
+  "testDependencies": {}
+}
