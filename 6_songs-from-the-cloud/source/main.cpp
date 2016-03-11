@@ -21,7 +21,7 @@ void registered() {
 // Takes in a tone frequency, and after duration (in ms.) we stop playing again
 static void playTone(int tone, int duration) {
     for (long i = 0; i < duration * 1000L; i += tone * 2) {
-        buzzer = 0.2f;
+        buzzer = 0.1f;
         wait_us(tone);
         buzzer = 0.0f;
         wait_us(tone);
