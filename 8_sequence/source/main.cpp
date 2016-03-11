@@ -56,27 +56,11 @@ static void check_no_change() {
     if (last_event != 0 && (us_ticker_read() / 1000L) - last_event > 5000) {
         printf("No change for 5s, updating\r\n");
         
-        recording = false;
-        Scheduler::postCallback(blink_blue).period(milliseconds(500));
-        
-        std::stringstream ss;
-        for (uint8_t i = 0; i < sequence->size(); i++) {
-            ss << sequence->at(i);
-            ss << ":";
-        }
-        mbed_client_set("buzzer/recorded", ss.str());
+        // YOUR CODE HERE (2)
     }
 }
 
-static void save_event(int id) {
-    std::stringstream ss;
-    ss << id;
-    ss << ",";
-    ss << (us_ticker_read() / 1000L) - start_time;
-    sequence->push_back(ss.str());
-    
-    last_event = us_ticker_read() / 1000L;
-}
+// YOUR CODE HERE (1)
 
 static void play_note1() {
     if (!recording) return;

@@ -40,14 +40,7 @@
   function play() {
     var song = JSON.parse(document.querySelector('#recorded').textContent);
     
-    song.forEach(function(note) {
-      var sample = mapping[note[0]];
-      var timing = note[1];
-      
-      setTimeout(function() {
-        document.querySelector('#' + sample).play();
-      }, timing);
-    });
+    // YOUR CODE HERE
   }
   play();
   </script>

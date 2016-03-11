@@ -18,6 +18,16 @@ An IDE should open. Congratulations!
 
 **Optional:** We can talk to the board via a serial port, but you might need some software. Read [this doc](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications) and install required software (like PuTTY on Windows).
 
+**Locally:** If you like things locally, you can do so by installing [yotta](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/installation/), then cloning the repo. If you want to build a project, go to the project folder and run:
+
+```bash
+$ yt target frdm-k64f-gcc # our board
+$ yt build
+$ cp build/frdm-k64f-gcc/source/*.bin /Volumes/MBED
+```
+
+I very much recommend to just use the online IDE, as it makes it easier for us, but if you want to continue hacking in the future, this is a nice way.
+
 ## 1. Blinky
 
 1. First we need to set up our project and our target. In the button next to 'Build' in Cloud9, select '1_blinky'.
@@ -166,6 +176,8 @@ Scheduler::postCallback(read_vibrate).period(milliseconds(30));
 
 Now use this reading to generate tones whenever you detect a big enough hit on the pad (> 1000 for example). You can play with different tones, depending on how hard you hit the pad as well.
 
+@todo: Jan to add some code to make sure we only record a hit once every .3 seconds or so, to make it sound better.
+
 ## 5. Songs
 
 1. Switch projects, click `4_accelerometer` and change to `5_songs`
@@ -290,5 +302,92 @@ static void playTone(int tone, int duration) {
 1. Copy 'security.h' from 6_songs-from-the-cloud/source/security.h to 8_sequence/source/security.h
 1. Hit the Build button, make sure the project builds, and when you flash it on the board that the LED turns green.
 1. Let's record what we're doing, f.e. when we hit which button, or pad. We have the same interrupts already set up, so let's implement the functions we had before.
+1. Take a look at `play_note1`, we'll see that the code has changed a bit:
 
-http://drumhits.biz/free-drum-samples/cat_view/4-free-drum-samples
+```cpp
+static void play_note1() {
+    if (!recording) return;
+    
+    save_event(1);
+    
+    play_tone(NOTE_C4);
+}
+```
+
+1. We'll call `save_event` with the ID of our button (or pad or accelerometer, or any input).
+1. Let's implement the save_event function. It will store the current value of the device clock, along with the ID. So later we know at which point which input was activated.
+1. Under 'YOUR CODE HERE (1)' insert:
+
+```cpp
+static void save_event(int id) {
+    // we're gonna make a set of characters (string) via a stringstream
+    std::stringstream ss;
+    ss << id;
+    ss << ",";
+    ss << (us_ticker_read() / 1000L) - start_time;
+    // the output is now something like '1,3500' (if you pressed input 1 at 3500 ms. after recording)
+    // this was one of many events, so we'll hold all events in the `sequence` variable (which is a vector (like a list or array))
+    sequence->push_back(ss.str());
+    
+    last_event = us_ticker_read() / 1000L;
+}
+```
+
+1. The countdown sequence is already programmed in (see `countdown`), so we just need to find out when you stopped playing. We got some code that checks if no events came in for 5 seconds already.
+1. Under 'YOUR CODE HERE (2)' insert:
+
+```
+        // note that we're not recording anymore (so inputs don't have any effect anymore)
+        recording = false;
+        // blink the blue LED to note that we're done
+        Scheduler::postCallback(blink_blue).period(milliseconds(500));
+        
+        // combine all the values in `sequence` into one big string
+        // it'll look like 1,3500:2,3550:
+        std::stringstream ss;
+        for (uint8_t i = 0; i < sequence->size(); i++) {
+            ss << sequence->at(i);
+            ss << ":";
+        }
+        // send the data to the cloud
+        mbed_client_set("buzzer/recorded", ss.str());
+```
+
+1. Build and flash your device. On startup, wait until the LED is green, after that it will blink 3 times, now it's recording. Hit the buttons and knock on the table to record. 5 seconds after you stopped doing anything the blue LED will blink, indicating that the recording was finished.
+
+### Web app
+
+1. Let's do something with the data we just recorded, like playing it back with nicer samples over your computer speaker!
+1. In the terminal go to sxsw/8_sequence/web/
+1. Run `npm install`
+1. With the same token we created in '6. Songs from the cloud', run `TOKEN=xxx node server.js`
+1. In the terminal it will show: 'Set callback URL to XXXX'
+1. Click on XXXX and select 'Open'
+1. A web page opens and your device should be there. Click on the device, and you should see the sequence you just recorded (in the form of `1,3500:2,3550`).
+1. Let's play this sequence over your computer speaker. Already included are some samples for the hi-hat, kick drum, and the snare drum.
+1. In sxsw/8_sequence/web/views/instrument.html, under YOUR CODE HERE insert:
+
+```js
+    // loop over all the inputs
+    song.forEach(function(note) {
+      // the sample we'll use (f.e. 1=hat)
+      var sample = mapping[note[0]];
+      // the timing (how long after we start playing should this happen)
+      var timing = note[1];
+      
+      // after timing ms.
+      setTimeout(function() {
+        // we'll play the sample
+        document.querySelector('#' + sample).play();
+      }, timing);
+    });
+```
+
+1. Refresh the page and hear yourself jamming (it takes a while to get this sound right ;-)).
+1. Automatically when you record a new set, we'll automatically stream it to the web app (via a web socket), so hit the RESET button on your device, play a new rhythm, and it will play back straight away!
+
+**Optional:** Get some new sound effects from a website like [this](http://drumhits.biz/free-drum-samples/cat_view/4-free-drum-samples) and create your own sound.
+
+**Optional 2:** Add some more inputs, f.e. one of the pads that we have at the front. They make it a lot easier to hold rhythm as well, as you're tapping them.
+
+**Optional 3:** Currently we have to hit the RESET button on the device to restart recording. Can you create a way of changing this so by (f.e.) holding one of the buttons we restart?
