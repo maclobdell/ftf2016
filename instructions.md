@@ -165,34 +165,28 @@ Use minar to read the data every 10 ms., then use the value from the acceleromet
 
 You can play with the distribution of the tone. Just feeding the raw data into the algorithm doesn't generate the nicest effect.
 
-## 4b. Pads (advanced)
+## 4b. Adding pads
 
 1. We can add vibration pads as well, although this requires a bit of assembly
-1. Take one of the pads from the front, and a 1 million Ohm resistor (brown, black, green)
-1. Take a cable stripper and strip a bit of the red and black wires of the pad
+1. Take one of the pads from the front
 1. Put the red cable into A0 ([pinout](https://developer.mbed.org/media/uploads/GregC/xfrdm-k64f_header-pinout.jpg.pagespeed.ic.GDev93u6zd.jpg))
 1. Put the black cable in one of the GND
-1. Put the resistor in A0 and GND
 
-Now we can read the value of the sensor via:
+Now under 'YOUR CODE HERE (2)' add:
 
 ```cpp
-// top of the file
-AnalogIn vibrate(A0);
-
-// with your other functions
-static void read_vibrate() {
-    // value is between 0 and 65535
-    printf("vibrate %d\r\n", vibrate.read_u16());
-}
-
-// in app_start
-Scheduler::postCallback(read_vibrate).period(milliseconds(30));
+    auto v = pad.read_u16();
+    if (v == 65535 && !is_pad_high) {
+        play_tone(NOTE_F4);
+        Scheduler::postCallback(silence).delay(milliseconds(200));
+    }
+    
+    is_pad_high = v == 65535;
 ```
 
-Now use this reading to generate tones whenever you detect a big enough hit on the pad (> 1000 for example). You can play with different tones, depending on how hard you hit the pad as well.
+Now when we hit the pad, we get to play a tone! It's possible to detect how hard you hit the pad as well, but this requires a 1M Ohm resistor, which I do not have at hand unfortunately. If we do have them, hook the resistor up from A0 to ground, now the readings will be much better.
 
-@todo: Jan to add some code to make sure we only record a hit once every .3 seconds or so, to make it sound better.
+Because the above, we can only detect hits every ~1s.
 
 ## 5. Songs
 

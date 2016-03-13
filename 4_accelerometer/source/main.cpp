@@ -8,6 +8,7 @@ InterruptIn btn2(SW2);               // we create a variable 'btn2', use it as a
 InterruptIn btn3(SW3);               // we create a variable 'btn3', use it as an in port
 
 PwmOut buzzer(D3);                   // our buzzer is a PWM output (pulse-width modulation)
+AnalogIn pad(A0);                    // connect a pad to the analog input
 
 // Set up the accelerometer (this is specific to the onboard one)
 InterruptIn accel_interrupt_pin(PTC13);
@@ -22,6 +23,11 @@ static void silence() {
 static void play_tone(int tone) {
     buzzer.period_us(tone);
     buzzer.write(0.10f); // 10% duty cycle, otherwise it's too loud
+}
+
+static bool is_pad_high = false;
+static void read_pad() {
+    // YOUR CODE HERE (2)
 }
 
 static void play_note1() {
@@ -50,5 +56,7 @@ void app_start(int, char**) {
     accel.config_int();      // enabled interrupts from accelerometer
     accel.config_feature();  // turn on motion detection
     accel.enable();          // enable accelerometer
+    
+    Scheduler::postCallback(read_pad).period(milliseconds(30));
 }
 
