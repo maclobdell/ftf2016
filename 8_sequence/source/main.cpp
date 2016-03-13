@@ -4,6 +4,7 @@
 #include "mbed-drivers/rtc_time.h"   // read the value of the realtime clock (for timing)
 #include "mbed-hal/us_ticker_api.h"  // ticker value
 #include "security.h" // get this from https://connector.mbed.com/#credentials
+#ifdef MBED_DOMAIN
 #include "mbed-client-ethernet-c-style/client.h"
 
 using namespace minar;
@@ -138,3 +139,5 @@ void app_start(int, char**) {
     
     buzzer = 0.0f;
 }
+
+#endif

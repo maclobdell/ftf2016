@@ -1,6 +1,7 @@
 #include "mbed-drivers/mbed.h"       // this tells us to load mbed OS related functions
 #include "tones.h"                   // list of all the tones and their frequencies
 #include "security.h" // get this from https://connector.mbed.com/#credentials
+#ifdef MBED_DOMAIN
 #include "mbed-client-ethernet-c-style/client.h"
 
 using namespace minar;
@@ -86,3 +87,5 @@ void app_start(int, char**) {
     }
     mbed_client_on_registered(&registered);
 }
+
+#endif

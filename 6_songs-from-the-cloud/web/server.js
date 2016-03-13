@@ -1,3 +1,5 @@
+var accessKey = '';
+
 var MbedConnector = require('mbed-connector-api');
 var EventEmitter = require('events');
 var app = require('express')();
@@ -5,8 +7,12 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var bodyParser = require('body-parser');
 
+if (!accessKey) {
+  throw 'No access key set! Go to https://connector.mbed.com/#accesskeys to get one!';
+}
+
 var connector = new MbedConnector({
-  accessKey: process.env.TOKEN
+  accessKey: accessKey
 });
 
 app.set('view engine', 'html');
@@ -82,11 +88,11 @@ server.listen(process.env.PORT || 8210, function() {
   console.log('Listening on port', process.env.PORT || 8210);
 
   var n = 'http://' + process.env.C9_HOSTNAME + '/notification';
-  console.log(n);
+  // console.log(n);
 
   connector.putCallback({ url: n }, function(err) {
     if (err) return console.error(err);
 
-    console.log('Set callback URL to http://' + process.env.C9_HOSTNAME);
+    console.log('Click this link: http://' + process.env.C9_HOSTNAME);
   });
 });

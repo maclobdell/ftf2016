@@ -117,6 +117,16 @@ static void play_note2() {
 
 **Optional:** Currently tones have fixed length. Change the code to play a tone when the button fall's, and call silence when button rise's. This should give you the ability to play some small (two-tone) songs. Look in the directory for '4_accelerometer' for hints.
 
+### Disconnected buzzer
+
+If you disconnected the buzzer by accident, no worries! Here's how you reconnect it:
+
+![Pinout](k64f-buzzer.png)
+
+You buzzer has four pins (red, black, yellow and white). Plug the red, black and yellow cables in according to the schema above (white is unused). Always use the **outer** lane on the board, not the inner pins.
+
+For the fast learners: that's red=3.3V, black=GND, yellow=D3.
+
 ## 4. More inputs!
 
 1. Switch projects, click `3_sound` and change to `4_accelerometer`
@@ -230,6 +240,8 @@ Now use this reading to generate tones whenever you detect a big enough hit on t
 
 ## 6. Songs from the cloud
 
+We'll be connecting the device to the internet now. First let's build the firmware for the device.
+
 1. Switch projects, click `5_songs` and change to `6_songs-from-the-cloud`.
 1. Go to https://connector.mbed.com/, and sign in.
 1. Now click on 'Security Credentials' and click 'Get my Security Credentials'.
@@ -239,17 +251,19 @@ Now use this reading to generate tones whenever you detect a big enough hit on t
 1. Flash your device. After a couple of seconds the GREEN led should turn on.
 1. Go to https://connector.mbed.com/#endpoints, a device should have appeared.
 1. Hurray, your device is connected to the internet!
-1. Let's set up a web application so we can talk to the device
-1. In the terminal, go to ~/workspace/sxsw/6_songs-from-the-cloud/web
-1. Run `npm install`
-1. Go to https://connector.mbed.com/#accesskeys and get an access key
-1. Now run `TOKEN=xxx node server.js` (where xxx = your access key)
-1. In the terminal it will show: 'Set callback URL to XXXX'
-1. Click on XXXX and select 'Open'
-1. A web page opens and your device should be there. Click on the device, and on the next page click 'Play'
+
+Now we want to start a web application which can talk back to the device.
+
+1. Open `sxsw/6_songs-from-the-cloud/web/server.js`.
+1. We need an access key (API key), go to https://connector.mbed.com/#accesskeys and get an access key.
+1. In server.js, fill in the key on line 1 (between the quotes), so we'll get something like `var accessKey = 'ABCDEF';`.
+1. In the tree, right click on the 'web' folder (under 6_songs-from-the-cloud) and choose 'Open terminal here'. A terminal window will open.
+1. Type `node server.js` and hit enter.
+1. After a few seconds a link will appear. Click on it, and select 'Open'.
+1. A web page opens and your device will be there. Click on the device, and on the next page click 'Play'.
 1. We can send new sounds to the board, f.e. via the 'Set Mario' button. Wait until you get an alert and press 'Play' again.
 1. **HOLD YOUR FINGER ON THE BUZZER, THIS WILL BE LOUD!**
-1. You can write some new songs from JavaScript (in sxsw/6_songs-from-the-cloud/web/views/instrument.html) now
+1. You can write some new songs from JavaScript (in sxsw/6_songs-from-the-cloud/web/views/instrument.html) now.
 
 **Optional:** Look into how we send values to the cloud. Add a way of setting the BPM from the web app as well.
 
@@ -308,19 +322,9 @@ static void playTone(int tone, int duration) {
 1. Copy 'security.h' from 6_songs-from-the-cloud/source/security.h to 8_sequence/source/security.h
 1. Hit the Build button, make sure the project builds, and when you flash it on the board that the LED turns green.
 1. Let's record what we're doing, f.e. when we hit which button, or pad. We have the same interrupts already set up, so let's implement the functions we had before.
-1. Take a look at `play_note1`, we'll see that the code has changed a bit:
 
-```cpp
-static void play_note1() {
-    if (!recording) return;
-    
-    save_event(1);
-    
-    play_tone(NOTE_C4);
-}
-```
+If you now take a look at the `play_note1` function, you'll see that the code has changed a bit. We call a function `save_event` whenever the function is called. In this function we pass in the identifier of our input (buttons or accelerometer). If you add pads to this installation, you can give them new unique identifiers as well.
 
-1. We'll call `save_event` with the ID of our button (or pad or accelerometer, or any input).
 1. Let's implement the save_event function. It will store the current value of the device clock, along with the ID. So later we know at which point which input was activated.
 1. Under 'YOUR CODE HERE (1)' insert:
 
@@ -364,11 +368,10 @@ static void save_event(int id) {
 ### Web app
 
 1. Let's do something with the data we just recorded, like playing it back with nicer samples over your computer speaker!
-1. In the terminal go to sxsw/8_sequence/web/
-1. Run `npm install`
-1. With the same token we created in '6. Songs from the cloud', run `TOKEN=xxx node server.js`
-1. In the terminal it will show: 'Set callback URL to XXXX'
-1. Click on XXXX and select 'Open'
+1. Open 'sxsw/8_sequence/web/server.js' and paste in the access key from 6.
+1. In the tree, right click on 'sxsw/8_sequence/web' and select 'Open terminal here'
+1. In the terminal run `node server.js`
+1. After a few seconds a link will appear. Click on the link and select 'Open'.
 1. A web page opens and your device should be there. Click on the device, and you should see the sequence you just recorded (in the form of `1,3500:2,3550`).
 1. Let's play this sequence over your computer speaker. Already included are some samples for the hi-hat, kick drum, and the snare drum.
 1. In sxsw/8_sequence/web/views/instrument.html, under YOUR CODE HERE insert:

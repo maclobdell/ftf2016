@@ -1,2 +1,3 @@
 build/
-security.h
+yotta_modules/
+yotta_targets/
