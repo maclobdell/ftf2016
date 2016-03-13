@@ -188,6 +188,22 @@ Now when we hit the pad, we get to play a tone! It's possible to detect how hard
 
 Because the above, we can only detect hits every ~1s.
 
+### If we found resistors
+
+If we did find resistors, change the code to:
+
+```cpp
+    auto v = pad.read_u16();
+    if (v > 1000 && !is_pad_high) {
+        play_tone(NOTE_F4);
+        Scheduler::postCallback(silence).delay(milliseconds(200));
+    }
+    
+    is_pad_high = v > 1000;
+```
+
+You can vary the sound depending on the value of the input (1000 is pretty soft tap, 30000 a lot louder).
+
 ## 5. Songs
 
 1. Switch projects, click `4_accelerometer` and change to `5_songs`
