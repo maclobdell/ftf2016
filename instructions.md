@@ -134,7 +134,7 @@ For the fast learners: that's red=3.3V, black=GND, yellow=D3.
 1. A new library is included which does this for you already
 1. At the bottom of main.cpp you'll see initialization logic for the accelerometer
 1. When the accelerometer triggers (movement detected), we can execute some code again
-1. Under '// YOUR CODE HERE' add the following code:
+1. Under '// YOUR CODE HERE (1)' add the following code:
 
 ```
 static void play_note3() {

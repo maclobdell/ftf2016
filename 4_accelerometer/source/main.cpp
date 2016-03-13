@@ -37,7 +37,7 @@ static void play_note2() {
     play_tone(NOTE_D4);
 }
 
-// YOUR CODE HERE
+// YOUR CODE HERE (1)
 
 // this code runs when the microcontroller starts up
 void app_start(int, char**) {
