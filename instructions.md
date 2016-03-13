@@ -6,19 +6,21 @@ In this session we'll work through eigth examples together. Jan will demonstrate
 
 Reading this doc after SXSW? Not a problem. Get a FRDM-K64F dev board and some piezo buzzers and pads, and follow along.
 
+> If you happen to much faster than everyone else, help your neighbours. We're at SXSW, we're social!
+
 ## Setup
 
 1. Connect the FRDM-K64F board to your computer. There's 2 micro-USB ports on the board, use the OpenSDA one!
-1. If you're on Windows, please install the [serial driver](https://developer.mbed.org/handbook/Windows-serial-configuration). On OS/X and Linux, no action required.
 1. The board mounts as a mass-storage device (like a USB drive). Verify that you can see it (drive name will be MBED).
-1. Go to http://c9.io/auth/mbed, and sign up for an account.
-1. After creating the account you will be at the dashboard. Click 'Create new workspace'.
-1. Choose a workspace name (f.e. 'sxsw'), and choose 'Public' as the workspace type.
-1. Under 'Clone from...' enter: https://github.com/janjongboom/sxsw.git
+1. Click on [this link](https://c9.io/auth/mbed?r=https%3A%2F%2Fc9.io%2Fopen%3FworkspaceType%3Dmbed%26clone_url%3Dhttps%3A%2F%2Fgithub.com%2Fjanjongboom%2Fsxsw.git).
+1. You will be asked to create an ARM mbed account, do so.
+1. Afterwards, you'll be redirected to the 'Create new workspace' page. Scroll to the bottom and click 'Create workspace'
 
 An IDE should open. Congratulations!
 
-**Optional:** We can talk to the board via a serial port, but you might need some software. Read [this doc](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications) and install required software (like PuTTY on Windows).
+**On Windows:** For basic usage you don't need to install anything, but if you want to see debug messages, install the [serial driver](https://developer.mbed.org/handbook/Windows-serial-configuration).
+
+**Debug messages:** We can talk to the board via a serial port, but you might need some software. Read [this doc](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications) and install required software (like PuTTY on Windows).
 
 **Locally:** If you like things locally, you can do so by installing [yotta](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/installation/), then cloning the repo. If you want to build a project, go to the project folder and run:
 
@@ -40,7 +42,8 @@ I very much recommend to just use the online IDE, as it makes it easier for us, 
 
 ```cpp
 static void blinky() {
-    // we inverse the value of 'red', toggling the LED every time this function is called
+    // the LED is either on or off (a 1 or a 0). We can inverse the value with the `!` (inverse operator).
+    // the flipped value is what we write back to the LED, thus toggling the LED.
     red = !red;
 }
 ```
@@ -48,7 +51,8 @@ static void blinky() {
 1. Now press 'Build' (in the top bar)
 1. A file downloads (blinky.bin)
 1. Drag the file to the 'MBED' disk
-1. The board will flash (green). When it stops, hit the 'Reset' button.
+1. The green LED next to the USB cable will flash.
+1. **After flashing, hit the 'Reset' button (next to the USB cable) to start the program.**
 1. Blinky runs!
 
 **Optional:** We use [minar](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/Full_Guide/MINAR/) as our event scheduler. We use it to periodically run the blinky function, but we can also use it to delay execution. E.g.:
