@@ -1,6 +1,4 @@
-#include "mbed-drivers/mbed.h"       // this tells us to load mbed OS related functions
-
-using namespace minar;
+#include "mbed.h"       // this tells us to load mbed related functions
 
 DigitalOut red(LED_RED);             // we create a variable 'red', use it as an out port
 DigitalOut green(LED_GREEN);         // we create a variable 'green', use it as an out port
@@ -11,9 +9,12 @@ InterruptIn btn3(SW3);               // we create a variable 'btn3', use it as a
 // YOUR CODE HERE
 
 // this code runs when the microcontroller starts up
-void app_start(int, char**) {
+int main() {
     green = red = 1; // turn off green and red on startup (1=off, I know it's weird)
     
     btn2.fall(toggle_red);
     btn3.fall(toggle_green);
+    
+    // spin in a main loop. Wait for interrupts.
+    while(1) {}
 }

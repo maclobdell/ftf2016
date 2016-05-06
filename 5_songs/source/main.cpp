@@ -1,8 +1,5 @@
-#include "mbed-drivers/mbed.h"       // this tells us to load mbed OS related functions
+#include "mbed.h"       // this tells us to load mbed  related functions
 #include "tones.h"                   // list of all the tones and their frequencies
-
-using namespace minar;
-using namespace mbed::util;
 
 PwmOut buzzer(D3);                   // our buzzer is a PWM output (pulse-width modulation)
 
@@ -24,7 +21,7 @@ static void play_song(int notes_left, int* melody, int* duration) {
 }
 
 // this code runs when the microcontroller starts up
-void app_start(int, char**) {
+void main() {
     // declare a melody
     int melody[] = {
         NOTE_E4, NOTE_D4, NOTE_C4, NOTE_D4, NOTE_E4, NOTE_E4, NOTE_E4, 

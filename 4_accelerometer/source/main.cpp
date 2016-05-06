@@ -1,14 +1,14 @@
-#include "mbed-drivers/mbed.h"       // this tells us to load mbed OS related functions
+#include "mbed.h"       // this tells us to load mbed related functions
 #include "tones.h"                   // list of all the tones and their frequencies
 #include "fxos8700cq/fxos8700cq.h"   // library for the accelerometer
-
-using namespace minar;
 
 InterruptIn btn2(SW2);               // we create a variable 'btn2', use it as an in port
 InterruptIn btn3(SW3);               // we create a variable 'btn3', use it as an in port
 
 PwmOut buzzer(D3);                   // our buzzer is a PWM output (pulse-width modulation)
 AnalogIn pad(A0);                    // connect a pad to the analog input
+
+Ticker readTicker;
 
 // Set up the accelerometer (this is specific to the onboard one)
 InterruptIn accel_interrupt_pin(PTC13);
@@ -40,7 +40,7 @@ static void play_note2() {
 // YOUR CODE HERE (1)
 
 // this code runs when the microcontroller starts up
-void app_start(int, char**) {
+int main() {
     // play note when we fall
     btn2.fall(play_note1);
     btn3.fall(play_note2);
@@ -56,7 +56,7 @@ void app_start(int, char**) {
     accel.config_int();      // enabled interrupts from accelerometer
     accel.config_feature();  // turn on motion detection
     accel.enable();          // enable accelerometer
-    
-    Scheduler::postCallback(read_pad).period(milliseconds(30));
-}
 
+    readTicker.attach(&read_pad, 0.03); // the address of the function to be attached (flip) and the interval (in seconds)    
+
+}
