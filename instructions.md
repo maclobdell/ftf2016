@@ -1,44 +1,37 @@
 # SX Create: Making music on a microcontroller, instructions
 
-Welcome to our session at SX Create! If you have any questions, please just give a shout out to Austin, Jan or Gregory, we're here to help everyone make the most of today.
+Welcome to our session at FTF! If you have any questions, please just give a shout out to to the ARM and NXP folks supporting the class.  We're here to help everyone make the most of today.
 
-In this session we'll work through eigth examples together. Jan will demonstrate everything, but this document should help you in case you're stuck or did not completely follow along. If you feel you're way faster than everyone else, we have some extra tasks at the bottom of each example. Please do not get ahead, the later examples all do something with music, and that will be very annoying for the other participants. :-)
+In this session we'll work through X examples together. We will demonstrate everything, but this document should help you in case you're stuck or did not completely follow along. If you feel you're way faster than everyone else, we have some extra tasks at the bottom of each example. Please do not get ahead, the later examples all do something with music, and that will be very annoying for the other participants. :-)
 
-Reading this doc after SXSW? Not a problem. Get a FRDM-K64F dev board and some piezo buzzers and pads, and follow along.
-
-> If you happen to much faster than everyone else, help your neighbours. We're at SXSW, we're social!
+> If you happen to much faster than everyone else, help your neighbors.
 
 ## Setup
 
 1. Connect the FRDM-K64F board to your computer. There's 2 micro-USB ports on the board, use the OpenSDA one!
 1. The board mounts as a mass-storage device (like a USB drive). Verify that you can see it (drive name will be MBED).
-1. Click on [this link](https://c9.io/auth/mbed?r=https%3A%2F%2Fc9.io%2Fopen%3FworkspaceType%3Dmbed%26clone_url%3Dhttps%3A%2F%2Fgithub.com%2Fjanjongboom%2Fsxsw.git).
-1. You will be asked to create an ARM mbed account, do so.
-1. Afterwards, you'll be redirected to the 'Create new workspace' page. Scroll to the bottom and click 'Create workspace'
+1. Go to http://developer.mbed.org
+1. Create an ARM mbed account if you do not have one.
+1. On the top right corner, click the **Compiler** button.
 
 An IDE should open. Congratulations!
 
-**On Windows:** For basic usage you don't need to install anything, but if you want to see debug messages, install the [serial driver](https://developer.mbed.org/handbook/Windows-serial-configuration).
+**On Windows:** To see debug messages, install the [serial driver](https://developer.mbed.org/handbook/Windows-serial-configuration).
 
 **Debug messages:** We can talk to the board via a serial port, but you might need some software. Read [this doc](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications) and install required software (like PuTTY on Windows).
 
-**Locally:** If you like things locally, you can do so by installing [yotta](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/installation/), then cloning the repo. If you want to build a project, go to the project folder and run:
-
-```bash
-$ yt target frdm-k64f-gcc # our board
-$ yt build
-$ cp build/frdm-k64f-gcc/source/*.bin /Volumes/MBED
-```
+**Locally:** If you like things locally, you can do so by [exporting to a supported toolchain](https://developer.mbed.org/handbook/Exporting-to-offline-toolchains).
 
 I very much recommend to just use the online IDE, as it makes it easier for us, but if you want to continue hacking in the future, this is a nice way.
 
 ## 1. Blinky
 
-1. First we need to set up our project and our target. In the button next to 'Build' in Cloud9, select '1_blinky'.
-1. On the button next to that, click 'Search in registry' and select 'frdm-k64f-gcc'.
-1. Open sxsw/1_blinky/source/main.cpp in the tree.
+1. First we need to set up our project and our target. In a new browser window, open https://developer.mbed.org/platforms/FRDM-K64F/ and click the **Add to your mbed Compiler** button.  Go back to the compiler and click F5 to refresh the page.
+1. Click the **Import** button, then click "**Click Here** to import from URL"
+1. Paste the URL https://developer.mbed.org/teams/MakingMusicWorkshop/code/1_blinky/
+1. Double click to open main.cpp
 1. We need to implement a function that will blink the LED.
-1. Under '// YOUR CODE HERE' add the following code
+   Under '// YOUR CODE HERE' add the following code
 
 ```cpp
 static void blinky() {
@@ -48,26 +41,20 @@ static void blinky() {
 }
 ```
 
-1. Now press 'Build' (in the top bar)
+1. Now press **Compile**
 1. A file downloads (blinky.bin)
 1. Drag the file to the 'MBED' disk
 1. The green LED next to the USB cable will flash.
 1. **After flashing, hit the 'Reset' button (next to the USB cable) to start the program.**
 1. Blinky runs!
 
-**Optional:** We use [minar](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/Full_Guide/MINAR/) as our event scheduler. We use it to periodically run the blinky function, but we can also use it to delay execution. E.g.:
-
-```cpp
-Scheduler::postCallback(blinky).delay(milliseconds(500));
-```
-
-Will call `blinky` once, in 500 ms. But does not repeat the process. Rewrite the app to use `delay` instead of `period`, but let it still blink the LED. Afterwards see if you can vary the time between blinks ([hint](http://www.cplusplus.com/reference/cstdlib/rand/)).
+**Optional:** We use [Ticker](https://developer.mbed.org/handbook/Ticker) to periodically run the blinky function.  You could also use [TimeOut](https://developer.mbed.org/handbook/Timeout) to run a function after a specified delay.
 
 ## 2. Two buttons, two colors
 
-1. Switch projects, click `1_blinky`, and change to `2_two_buttons`
-1. Open sxsw/2_two_buttons/source/main.cpp
-1. We want to execute a function when the button is clicked
+1. Now import https://developer.mbed.org/teams/MakingMusicWorkshop/code/2_two_buttons/
+1. Open main.cpp
+1. We want to execute a function when the button is pressed
 1. We already have code in place which responds when the buttons 'fall', which means the button is pressed
 1. Let's write similar code as before, but now with two functions (one for green, one for red)
 1. Under '// YOUR CODE HERE' add the following code
@@ -81,24 +68,23 @@ static void toggle_green() {
 }
 ```
 
-1. Hit the Build button and flash the application. Clicking SW2 and SW3 will now toggle the LEDs. Having them both on will also allow you to create yellow.
+1. Hit the Compile button and flash the application. Clicking SW2 and SW3 will now toggle the LEDs. Having them both on will also allow you to create yellow.
 
 **Optional:** We use `fall` currently, which triggers when the button is clicked. We can also use `rise` to get an event when the button is no longer clicked. Change the code so that the LEDs only burn when the button is pressed down.
 
-**Optional 2:** When we start a periodic timer with minar, we can cancel the timer as well via:
+**Optional 2:** When we start a periodic timer with a ticker, we can cancel the timer as well via:
 
 ```cpp
-callback_handle_t callback = Scheduler::postCallback(blinky).period(milliseconds(500)).getHandle();
-Scheduler::cancelCallback(callback);
+<name_of_ticker>.detach();
 ```
 
 Use the above pattern to combine 1. and 2. Pressing the button should start blinking the color, instead of turning it on. Pressing the button again should cancel the blinking.
 
 ## 3. Sound instead of color
 
-1. Switch projects, click `2_two_buttons`, and change to `3_sound`
+1. Now import https://developer.mbed.org/teams/MakingMusicWorkshop/code/3_sound/
 1. We have a buzzer, which we can use instead of the color as an output
-1. If the buzzer is not yet connected to your board, do xyz
+1. If the buzzer is not yet connected to your board, connect it.  See lab staff for help.
 1. We use pulse width modulation to create the square waves, the buzzer is connected to pin 3
 1. We have a `play_tone` function, now let's hook it up...
 1. Under '// YOUR CODE HERE' add the following code
@@ -115,7 +101,7 @@ static void play_note2() {
 1. Build and flash, when hitting the buttons you'll now get sound (a C and a D tone)
 1. Try and play with different tones and tone lengths
 
-**Optional:** Currently tones have fixed length. Change the code to play a tone when the button fall's, and call silence when button rise's. This should give you the ability to play some small (two-tone) songs. Look in the directory for '4_accelerometer' for hints.
+**Optional:** Currently tones have fixed length. Change the code to play a tone when the button fall's, and call silence when button rise's. This should give you the ability to play some small (two-tone) songs. The next example project, '4_accelerometer', will provide  hints.
 
 ### Disconnected buzzer
 
@@ -123,29 +109,29 @@ If you disconnected the buzzer by accident, no worries! Here's how you reconnect
 
 ![Pinout](k64f-buzzer.png)
 
-You buzzer has four pins (red, black, yellow and white). Plug the red, black and yellow cables in according to the schema above (white is unused). Always use the **outer** lane on the board, not the inner pins.
+Your buzzer has four pins (red, black, yellow and white). Plug the red, black and yellow cables in according to the schema above (white is unused). Always use the **outer** lane on the board, not the inner pins.
 
-For the fast learners: that's red=3.3V, black=GND, yellow=D3.
+red=3.3V, black=GND, yellow=D3.
 
 ## 4. More inputs!
 
-1. Switch projects, click `3_sound` and change to `4_accelerometer`
+1. Now import https://developer.mbed.org/teams/MakingMusicWorkshop/code/4_accelerometer/
 1. We're going to use the accelerometer movement detector to play a sound too, this means we can knock the board on a table and get a sound
 1. A new library is included which does this for you already
 1. At the bottom of main.cpp you'll see initialization logic for the accelerometer
 1. When the accelerometer triggers (movement detected), we can execute some code again
-1. Under '// YOUR CODE HERE (1)' add the following code:
+1. Under '// YOUR CODE HERE' add the following code:
 
-```
+```cpp
 static void play_note3() {
     play_tone(NOTE_E4);
     
-    Scheduler::postCallback(silence).delay(milliseconds(200));
+    tone_timeout.attach(&silence, 0.2); // setup tone_timeout to call silence after 200 duration ms
 }
 ```
 
 1. We manually call `silence` now to get predictable behavior
-1. Try and change the code to use `accel_interrupt_pin.rise` to silence instead (remove the Scheduler call from play_note3 as well). See what it does.
+1. Try and change the code to use `accel_interrupt_pin.rise` to silence instead (remove the timeout call from play_note3 as well). See what it does.
 1. Change the notes and play some simple melodies
 
 **Optional:** You can read the data from the accelerometer (x, y, z axis) via:
@@ -161,54 +147,15 @@ static void read_accel() {
 }
 ```
 
-Use minar to read the data every 10 ms., then use the value from the accelerometer (e.g. `accel_data.z`) and feed it into `play_tone` function. We can now change the sound depending on how you hold the device in physical space. Allow to pause the sound by pressing one of the buttons.
+Use a ticker to read the data every 10 ms., then use the value from the accelerometer (e.g. `accel_data.z`) and feed it into `play_tone` function. We can now change the sound depending on how you hold the device in physical space. Allow to pause the sound by pressing one of the buttons.
 
 You can play with the distribution of the tone. Just feeding the raw data into the algorithm doesn't generate the nicest effect.
 
-## 4b. Adding pads
-
-1. We can add vibration pads as well, although this requires a bit of assembly
-1. Take one of the pads from the front
-1. Put the red cable into A0 ([pinout](https://developer.mbed.org/media/uploads/GregC/xfrdm-k64f_header-pinout.jpg.pagespeed.ic.GDev93u6zd.jpg))
-1. Put the black cable in one of the GND
-
-Now under 'YOUR CODE HERE (2)' add:
-
-```cpp
-    auto v = pad.read_u16();
-    if (v == 65535 && !is_pad_high) {
-        play_tone(NOTE_F4);
-        Scheduler::postCallback(silence).delay(milliseconds(200));
-    }
-    
-    is_pad_high = v == 65535;
-```
-
-Now when we hit the pad, we get to play a tone! It's possible to detect how hard you hit the pad as well, but this requires a 1M Ohm resistor, which I do not have at hand unfortunately. If we do have them, hook the resistor up from A0 to ground, now the readings will be much better.
-
-Because the above, we can only detect hits every ~1s.
-
-### If we found resistors
-
-If we did find resistors, change the code to:
-
-```cpp
-    auto v = pad.read_u16();
-    if (v > 1000 && !is_pad_high) {
-        play_tone(NOTE_F4);
-        Scheduler::postCallback(silence).delay(milliseconds(200));
-    }
-    
-    is_pad_high = v > 1000;
-```
-
-You can vary the sound depending on the value of the input (1000 is pretty soft tap, 30000 a lot louder).
-
 ## 5. Songs
 
-1. Switch projects, click `4_accelerometer` and change to `5_songs`
+1. Now import https://developer.mbed.org/teams/MakingMusicWorkshop/code/5_songs/
 1. We can play tones from various inputs, but we could also play songs that we program in
-1. We create a simple format to write notes (in app_start).
+1. We create a simple format to write notes (in main).
 1. Now we need to write the code that will play this format.
 1. Our `play_song` function takes 3 arguments:
     * The number of notes left
@@ -231,19 +178,28 @@ You can vary the sound depending on the value of the input (1000 is pretty soft 
     // is this the last tone?    
     if (notes_left - 1 == 0) {
         // we're done! just finish this note and silence
-        Scheduler::postCallback(silence).delay(milliseconds(length / 2));
+        
+        tone_timeout.attach(&silence, length/2000); // setup tone_timeout to call silence in length / 2 ms
+        // alternatively just do this
+        wait(0.2);
+        silence();
     }
     else {
         // after half the length of this tone, we silence
-        Scheduler::postCallback(silence).delay(milliseconds(length / 2));
-        
+
+        tone_timeout.attach(&silence, length/2000); // setup tone_timeout to call silence in length / 2 ms
+        // alternatively just do this
+        wait(0.2);
+        silence();
+                
         // after the full length of this tone, we call ourselves, but up the melody, and down the notes_left
         FunctionPointer3<void, int, int*, int*> fp(play_song);
+        
         Scheduler::postCallback(fp.bind(notes_left - 1, melody + 1, duration + 1)).delay(milliseconds(length));
     }
 ```
 
-1. Delete the pause between the notes, what do you see?
+1. Delete the pause between the notes, what do you hear?
 1. Find some melody and program it in, make some of your own music. Play with the BPM as well to speed things up or slow things down.
 
 **Optional:** Add some LED effects whenever songs are playing. Toggle colors (we have red, green, blue LEDs on the board) depending on the tone.
@@ -252,12 +208,13 @@ You can vary the sound depending on the value of the input (1000 is pretty soft 
 
 We'll be connecting the device to the internet now. First let's build the firmware for the device.
 
-1. Switch projects, click `5_songs` and change to `6_songs-from-the-cloud`.
+
+1. Now import https://developer.mbed.org/teams/MakingMusicWorkshop/code/6_songs-from-the-cloud
 1. Go to https://connector.mbed.com/, and sign in.
 1. Now click on 'Security Credentials' and click 'Get my Security Credentials'.
 1. Copy everything in the gray box.
-1. Make a new file 'sxsw/6_songs-from-the-cloud/source/security.h' and paste the content in.
-1. Plug in an ethernet cable and hit 'Build'.
+1. Open the file 'security.h' and paste the content in.
+1. Plug in an ethernet cable and hit 'Compile'.
 1. Flash your device. After a couple of seconds the GREEN led should turn on.
 1. Go to https://connector.mbed.com/#endpoints, a device should have appeared.
 1. Hurray, your device is connected to the internet!
