@@ -1,4 +1,4 @@
-# SX Create: Making music on a microcontroller, instructions
+# FTF: Making music on a microcontroller, instructions
 
 Welcome to our session at FTF! If you have any questions, please just give a shout out to to the ARM and NXP folks supporting the class.  We're here to help everyone make the most of today.
 
