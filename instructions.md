@@ -4,11 +4,11 @@ Welcome to our session at FTF! If you have any questions, please just give a sho
 
 In this session we'll work through X examples together. We will demonstrate everything, but this document should help you in case you're stuck or did not completely follow along. If you feel you're way faster than everyone else, we have some extra tasks at the bottom of each example. Please do not get ahead, the later examples all do something with music, and that will be very annoying for the other participants. :-)
 
-> If you happen to much faster than everyone else, help your neighbors.
+> If you happen to be much faster than everyone else, help your neighbors.
 
 ## Setup
 
-1. Connect the FRDM-K64F board to your computer. There's 2 micro-USB ports on the board, use the OpenSDA one!
+1. Connect the FRDM-K64F board to your computer. There are two micro-USB ports on the board, use the "SDAUSB" one (next to reset button)!
 1. The board mounts as a mass-storage device (like a USB drive). Verify that you can see it (drive name will be MBED).
 1. Go to http://developer.mbed.org
 1. Create an ARM mbed account if you do not have one.
@@ -16,9 +16,9 @@ In this session we'll work through X examples together. We will demonstrate ever
 
 An IDE should open. Congratulations!
 
-**On Windows:** To see debug messages, install the [serial driver](https://developer.mbed.org/handbook/Windows-serial-configuration).
+**On Windows:** To see debug messages, install the [serial driver](https://developer.mbed.org/handbook/Windows-serial-configuration). (**Note:** this should be done already on the NXP laptops provided for FTF labs)
 
-**Debug messages:** We can talk to the board via a serial port, but you might need some software. Read [this doc](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications) and install required software (like PuTTY on Windows).
+**Debug messages:** We can talk to the board via a serial port, but you might need some software. Read [this doc](https://developer.mbed.org/handbook/SerialPC#host-interface-and-terminal-applications) and install required software (like PuTTY on Windows).  (**Note:** NXP laptops have Tera Term 4.83 pre-installed)
 
 **Locally:** If you like things locally, you can do so by [exporting to a supported toolchain](https://developer.mbed.org/handbook/Exporting-to-offline-toolchains).
 
