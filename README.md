@@ -1,3 +1,5 @@
-# sxsw
+# FTF2016
 
-Demo's for SX Create: Making music on a microcontroller
+FTF2016 mbed OS Workshop: Making music on a microcontroller
+
+Visit https://developer.mbed.org/teams/MakingMusicWorkshop for code and instructions.
