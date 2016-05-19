@@ -1,4 +1,4 @@
-var accessKey = '';
+var accessKey = 'tqZE6ld7NycRCqnwSqobJMuB4JzibbJJDnAZyBHT1JChA4tJsdOfZruG55rtfg9eNqlyulmR5ZpgrhCWXeq2bvLDpRjvncqMBKun';
 
 var MbedConnector = require('mbed-connector-api');
 var EventEmitter = require('events');
