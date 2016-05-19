@@ -12,6 +12,7 @@
   <hr>
   <button id="set-mario">Set Mario!</button>
   <button id="set-vader">Set Vader!</button>
+  <button id="set-link">Set Link!</button>
   
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -100,7 +101,25 @@
     socket.emit('set-music', '{{id}}', melody2, tempo2);
   };
   
-  
+  document.querySelector('#set-link').onclick = function(){
+    var melody3 = [
+      NOTE_D5, NOTE_F4, NOTE_C5, NOTE_F4, NOTE_B4,
+      NOTE_A4, NOTE_B4, NOTE_C5, NOTE_A4, 0,
+      NOTE_A4, NOTE_E5, NOTE_G4, NOTE_A4, NOTE_E5,
+      NOTE_G4, NOTE_A4, NOTE_A4, 0,       NOTE_A4, 
+      NOTE_G4, NOTE_D5, NOTE_F4, NOTE_G4, NOTE_D5,
+      NOTE_F4, NOTE_G4, 0,       NOTE_G4, NOTE_G4];
+      
+      var tempo3 = [
+        9, 9, 9, 9, 6,
+        3, 6 ,3, 9, 6, 
+        3, 3, 3, 3, 3,
+        3, 3, 3, 3, 9,
+        3 ,3 ,3, 3, 3,
+        3, 3, 3, 3, 9];
+        
+         socket.emit('set-music', '{{id}}', melody3, tempo3);
+  };
 var NOTE_B0 =  31;
 var NOTE_C1 =  33;
 var NOTE_CS1 = 35;
